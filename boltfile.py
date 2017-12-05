@@ -85,7 +85,7 @@ config = {
                 'xunit-file': TESTS_RESULTS_FILE,
                 'with-coverage': True,
                 'cover-erase': True,
-                'cover-package': 'behave-restful',
+                'cover-package': 'behave_restful',
                 'cover-html-dir': TESTS_COVERAGE_DIR,
                 'cover-branches': True,
             }

@@ -5,7 +5,7 @@ from assertpy import assert_that
 
 import behave_restful.app as br_app
 
-class TestBehaveRestfulApp(object):
+class TestBehaveRestfulApp(unittest.TestCase):
 
     def setUp(self):
         self.test_dir = '/a/path'

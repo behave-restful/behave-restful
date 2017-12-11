@@ -9,6 +9,7 @@ bolt.register_module_tasks(bolt_br)
 bolt.register_task('default', [
     'pip',
     'run-unit-tests',
+    'run-feature-tests'
 ])
 bolt.register_task('ut', [
     'run-unit-tests'
@@ -17,8 +18,7 @@ bolt.register_task('ct', [
     'conttest'
 ])
 bolt.register_task('ft', [
-    'clear-pyc-features',
-    'behave-restful'
+    'run-feature-tests'
 ])
 
 # CI/CD TASKS
@@ -47,6 +47,10 @@ bolt.register_task('clear-pyc-features', [
 bolt.register_task('run-unit-tests', [
     'clear-pyc-testing',
     'nose',
+])
+bolt.register_task('run-feature-tests', [
+    'clear-pyc-features',
+    'behave-restful'
 ])
 
 

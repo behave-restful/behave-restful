@@ -1,18 +1,24 @@
 import os.path
 
 import bolt
+import behave_restful.bolt_behave_restful as bolt_br
+bolt.register_module_tasks(bolt_br)
 
 
 # DEVELOPMENT TASKS
 bolt.register_task('default', [
     'pip',
     'run-unit-tests',
+    'run-feature-tests'
 ])
 bolt.register_task('ut', [
     'run-unit-tests'
 ])
 bolt.register_task('ct', [
     'conttest'
+])
+bolt.register_task('ft', [
+    'run-feature-tests'
 ])
 
 # CI/CD TASKS
@@ -22,6 +28,11 @@ bolt.register_task('execute-unit-tests', [
     'mkdir.tests',
     'mkdir.tests.coverage',
     'nose.ci',
+])
+bolt.register_task('execute-feature-tests', [
+    'clear-pyc-features',
+    'mkdir.features',
+    'behave-restful.ci'
 ])
 
 # HELPER TASKS
@@ -36,6 +47,10 @@ bolt.register_task('clear-pyc-features', [
 bolt.register_task('run-unit-tests', [
     'clear-pyc-testing',
     'nose',
+])
+bolt.register_task('run-feature-tests', [
+    'clear-pyc-features',
+    'behave-restful'
 ])
 
 
@@ -54,6 +69,8 @@ REQUIREMENTS_FILE = os.path.join(PROJECT_ROOT, 'requirements.txt')
 TESTS_RESULTS_DIR = os.path.join(OUTPUT_DIR, 'tests', 'results')
 TESTS_RESULTS_FILE = os.path.join(TESTS_RESULTS_DIR, 'unit_tests_results.xml')
 TESTS_COVERAGE_DIR = os.path.join(OUTPUT_DIR, 'tests', 'coverage')
+
+FEATURES_RESULTS_DIR = os.path.join(OUTPUT_DIR, 'features', 'results')
 
 
 
@@ -94,6 +111,19 @@ config = {
     'conttest': {
         'task': 'run-unit-tests'
     },
+    'behave-restful': {
+        'directory': FEATURES_DIR,
+        'options': {
+            'format': 'progress2'
+        },
+        'ci': {
+            'options': {
+                'tags': ['~@disabled', '~@wip'],
+                'junit': True,
+                'junit-directory': FEATURES_RESULTS_DIR,
+            }
+        }
+    },
     'mkdir': {
         'directory': OUTPUT_DIR,
         'tests': {
@@ -102,5 +132,8 @@ config = {
                 'directory': TESTS_COVERAGE_DIR
             }
         },
+        'features': {
+            'directory': FEATURES_RESULTS_DIR
+        }
     }
 }

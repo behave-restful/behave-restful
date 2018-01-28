@@ -13,3 +13,9 @@ def step_impl(context):
     this_directory = os.path.dirname(__file__)
     expected_directory = os.path.abspath(os.path.join(this_directory, '..'))
     assert_that(context.test_dir).is_equal_to(expected_directory)
+
+
+@then('the definition var {var} has a value of {value}')
+def step_impl(context, var, value):
+    actual_value = context.vars.get(var)
+    assert_that(actual_value).is_equal_to(value)

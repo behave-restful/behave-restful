@@ -6,3 +6,7 @@ Feature: Application Initialization
     Scenario: The context is initialized with application directories
         Then the context exposes the working directory
             And the context exposes the test directory
+
+
+    Scenario: The context is initialized with the specified definition
+        Then the definition var BR_TESTING_STATUS has a value of running 

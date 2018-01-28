@@ -26,12 +26,15 @@ class RunBehaveRestfulTask(object):
             raise FeaturesDirectoryNotSpecifiedError()
         if not self._exists(self.features_dir): 
             raise FeaturesDirectoryDoesNotExistError(self.features_dir)
+        self.definition = self.config.get('definition')
         self.options = self.config.get('options') or {}
 
 
     def _execute(self):
         options_parser = BehaveOptionsParser()
         arguments = options_parser.parse(self.options)
+        if self.definition:
+            arguments.extend(['-D', 'definition={d}'.format(d=self.definition)])
         arguments.append(self.features_dir)
         result = self._invoke_behave(arguments)
         if result != 0: raise FeatureTestsFailedError()

@@ -5,6 +5,8 @@ simplify testing.
 """
 import os
 
+import behave_restful._definitions as _defs
+
 class BehaveRestfulApp(object):
     """
     Behave Restful application class used to initialize the execution context
@@ -24,4 +26,9 @@ class BehaveRestfulApp(object):
         """
         context.test_dir = test_dir
         context.working_dir = os.getcwd()
+        _defs.DefinitionInitializer().initialize(context)
+
+
+    
+
     

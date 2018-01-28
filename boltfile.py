@@ -113,6 +113,7 @@ config = {
     },
     'behave-restful': {
         'directory': FEATURES_DIR,
+        'definition': 'br_test',
         'options': {
             'format': 'progress2'
         },

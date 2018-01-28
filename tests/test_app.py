@@ -22,7 +22,10 @@ class TestBehaveRestfulApp(unittest.TestCase):
         assert_that(self.context.working_dir, os.getcwd())
 
 
-class ContextDouble(object): pass
+class ContextDouble(object):
+    def __init__(self):
+        self.config = self
+        self.userdata = {}
 
 
 

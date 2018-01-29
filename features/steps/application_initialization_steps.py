@@ -19,3 +19,12 @@ def step_impl(context):
 def step_impl(context, var, value):
     actual_value = context.vars.get(var)
     assert_that(actual_value).is_equal_to(value)
+
+
+@then('environment hooks are registered and invoked')
+def step_impl(context):
+    assert_that(context.before_all_invoked).is_true()
+    assert_that(context.before_feature_invoked).is_true()
+    assert_that(context.before_scenario_invoked).is_true()
+    assert_that(context.before_step_invoked).is_true()
+    assert_that(context.before_tag_invoked).is_true()

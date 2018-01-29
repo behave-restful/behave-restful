@@ -9,4 +9,9 @@ Feature: Application Initialization
 
 
     Scenario: The context is initialized with the specified definition
-        Then the definition var BR_TESTING_STATUS has a value of running 
+        Then the definition var BR_TESTING_STATUS has a value of running
+
+
+    @tagged
+    Scenario: Environment hooks are registered
+        Then environment hooks are registered and invoked

@@ -9,6 +9,16 @@ def step_impl(context):
     context.session = SessionDouble()
 
 
+@given('a test response')
+def step_impl(context):
+    context.response = ResponseDouble()
+
+
+@given('a response status of {status}')
+def step_impl(context, status):
+    context.response.status_code = int(status)
+
+
 @then('the context request url is equal to {expected_url}')
 def step_impl(context, expected_url):
     assert_that(context.request_url).is_equal_to(expected_url)
@@ -73,3 +83,9 @@ class SessionDouble(object):
         self.request_url = url
         self.request_kwargs = kwargs
         return self.response
+
+
+
+class ResponseDouble(object):
+    def __init__(self):
+        self.status_code = 200

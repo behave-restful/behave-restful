@@ -28,7 +28,7 @@ class EnvironmentHookInitializer(object):
     def _register_modules(self, hooks_manager, hooks_dir):
         dir_contents = self._get_hooks_dir_content(hooks_dir)
         module_names = [self._get_module_name(f) for f in dir_contents]
-        modules = [self._load_hook_module(m) for m in module_names]
+        modules = [self._load_hook_module(m) for m in module_names if m]
         [hooks_manager.register_module(m) for m in modules]  
 
 

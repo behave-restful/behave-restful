@@ -14,6 +14,8 @@ else:
 
 if py_version.major == 3 and py_version.minor >= 5:
     from http import HTTPStatus as HTTPStatus
+elif py_version.major == 3 and py_version.minor < 5:
+    import http.client as HTTPStatus
 else:
     import httplib as HTTPStatus
 

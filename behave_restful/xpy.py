@@ -3,14 +3,18 @@ This module provides utilities to write cross-version python code.
 """
 import sys
 
-PYTHON_VERSION_INFO = sys.version_info
-PYTHON_MAYOR_VERSION = PYTHON_VERSION_INFO[0]
+py_version = sys.version_info
 
-if PYTHON_MAYOR_VERSION == 3:
+if py_version.major == 3:
     BASE_STRING_TYPE = str
-    from http import HTTPStatus as HTTPStatus
+    
 else:
     BASE_STRING_TYPE = basestring
+    
+
+if py_version.major == 3 and py_version.minor >= 5:
+    from http import HTTPStatus as HTTPStatus
+else:
     import httplib as HTTPStatus
 
 

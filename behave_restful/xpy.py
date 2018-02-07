@@ -8,8 +8,10 @@ PYTHON_MAYOR_VERSION = PYTHON_VERSION_INFO[0]
 
 if PYTHON_MAYOR_VERSION == 3:
     BASE_STRING_TYPE = str
+    from http import HTTPStatus as HTTPStatus
 else:
     BASE_STRING_TYPE = basestring
+    import httplib as HTTPStatus
 
 
 

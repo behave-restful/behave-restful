@@ -36,6 +36,7 @@ class TestEnvironmentHookInitializer(unittest.TestCase):
         assert_that(self.initializer.hook_modules).contains('b')
         assert_that(self.initializer.hook_modules).does_not_contain('c')
         assert_that(self.initializer.hook_modules).does_not_contain('d')
+        assert_that(self.initializer.hook_modules).does_not_contain(None)
 
     
 
@@ -60,7 +61,7 @@ class EnvironmentHookInitializerSpy(_hooks.EnvironmentHookInitializer):
 
     def _get_hooks_dir_content(self, path):
         self.list_dir_invoked = True
-        return ['a.py', 'b.py', 'c.txt', 'd']
+        return ['a.py', 'b.py', 'c.txt', 'd', '__pycache__']
 
 
     def _load_hook_module(self, module_name):

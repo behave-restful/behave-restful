@@ -5,6 +5,8 @@ simplify testing.
 """
 import os
 
+import requests
+
 import behave_restful._definitions as _defs
 import behave_restful._hooks as _hooks
 
@@ -40,6 +42,8 @@ class BehaveRestfulApp(object):
         """
         context.test_dir = test_dir
         context.working_dir = os.getcwd()
+        context.default_session = requests
+        context.session = context.default_session
         _defs.DefinitionInitializer().initialize(context)
         _hooks.EnvironmentHookInitializer().initialize(context)
 

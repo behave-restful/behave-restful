@@ -1,4 +1,3 @@
-import json.decoder as jd
 import unittest
 
 from assertpy import assert_that
@@ -62,7 +61,7 @@ class TestResponseValidatorInterface(unittest.TestCase):
             "missing": "comma"
         }
         """
-        with self.assertRaises(jd.JSONDecodeError):
+        with self.assertRaises(ValueError):
             self.given_json({
                 'id': 1,
                 'name': 'object name'

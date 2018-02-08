@@ -19,6 +19,12 @@ def step_impl(context, status):
     context.response.status_code = int(status)
 
 
+@given('the response contains a json body like')
+def step_impl(context):
+    json_body = json.loads(context.text)
+    context.response.json_payload = json_body
+
+
 @then('the context request url is equal to {expected_url}')
 def step_impl(context, expected_url):
     assert_that(context.request_url).is_equal_to(expected_url)
@@ -89,3 +95,9 @@ class SessionDouble(object):
 class ResponseDouble(object):
     def __init__(self):
         self.status_code = 200
+        self.json_payload = None
+
+
+    def json(self):
+        if self.json_payload: return self.json_payload
+        raise ValueError('No JSON object could be decoded')

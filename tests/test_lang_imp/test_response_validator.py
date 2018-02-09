@@ -25,6 +25,46 @@ class TestResponseValidatorInterface(unittest.TestCase):
             "required": ["id", "name"]
         }
         """
+        self.json_body = {
+            "store": {
+                "book": [ 
+                { 
+                    "category": "reference",
+                    "author": "Nigel Rees",
+                    "title": "Sayings of the Century",
+                    "price": 8.95,
+                    "edition": 1
+                },
+                { 
+                    "category": "fiction",
+                    "author": "Evelyn Waugh",
+                    "title": "Sword of Honour",
+                    "price": 12.99,
+                    "edition": 2
+                },
+                { 
+                    "category": "fiction",
+                    "author": "Herman Melville",
+                    "title": "Moby Dick",
+                    "isbn": "0-553-21311-3",
+                    "price": 8.99,
+                    "edition": 3
+                },
+                { 
+                    "category": "fiction",
+                    "author": "J. R. R. Tolkien",
+                    "title": "The Lord of the Rings",
+                    "isbn": "0-395-19395-8",
+                    "price": 22.99,
+                    "edition": 4
+                }
+                ],
+                "bicycle": {
+                "color": "red",
+                "price": 19.95
+                }
+            }
+        }
         self.response = ResponseDouble()        
 
 
@@ -93,6 +133,33 @@ class TestResponseValidatorInterface(unittest.TestCase):
             }).validate()
 
 
+    # response_json_matches_at()
+    def test_matches_specified_property(self):
+        self.given_json(self.json_body).match('$.store.book[0].author', '"Nigel Rees"')
+
+
+    def test_matches_specified_double_property(self):
+        self.given_json(self.json_body).match('$.store.book[1].price', '12.99')
+
+
+    def test_matches_specified_integer_property(self):
+        self.given_json(self.json_body).match('$.store.book[3].edition', '4')
+
+
+    def test_evaluates_all_matches_found(self):
+        self.given_json(self.json_body).match('$.store.book[1:4].category', '"fiction"')
+
+
+    def test_evaluates_all_matches_and_fails_if_any_does_not_match(self):
+        with self.assertRaises(AssertionError):
+            self.given_json(self.json_body).match('$.store.book[*].category', '"reference"')
+
+
+    def test_raises_if_specified_path_does_not_find_matches(self):
+        with self.assertRaises(AssertionError):
+            self.given_json(self.json_body).match('$.not.a.path', 'no match')    
+
+
     def given_json(self, json_object):
         self.response.json_payload = json_object
         return self
@@ -100,6 +167,10 @@ class TestResponseValidatorInterface(unittest.TestCase):
 
     def validate(self):
         _validator.response_json_matches(self.response, self.schema)
+
+
+    def match(self, json_path, expected_value):
+        _validator.response_json_matches_at(self.response, json_path, expected_value)
         
 
 

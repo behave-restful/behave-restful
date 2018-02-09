@@ -9,7 +9,11 @@ vars = {
     'RESOURCE_NAME': 'resolved name',
     'TYPE_STRING': '{"type": "string"}',
     'TYPE_NUMBER': '{"type": "number"}',
-    'REQUIRED': 'required'
+    'REQUIRED': 'required',
+    'TITLE_PATH': '$.store.book[3].title',
+    'BOOK_INDEX': 1,
+    'TITLE': 'title',
+    'CATEGORY_FICTION': "fiction"
 }
 
 def initialize_definition(context):

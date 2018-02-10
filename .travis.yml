@@ -19,7 +19,7 @@ deploy:
     secure: fgbSPh0bdM6wSbEQIhgVjChZItegiFOloEmG3lU17JrzPVxPoJO0yjAp5j7DvRuEP+UTshTlksu/4Fv4Jmlsfxmr5AmtkuWjg1KoW10TI2AEi3xhn4cf4ZJof5P4QFdd4WCg+u9JcbWzwKN7cvXhkSaLe8SYw8skvsy4K29taRd+DhyLfdFETYXYIWcUOQ/oCYj6iZlSIj1EuAQjSKd7p6jLLUwIDsgGiNoVnn7i+BERGVOzEQsFVC4QsoEbXJB/jm0zv0cN3JZmPZkzqkxw4CdQ/xHS6EDoeOIYHe/DY97p3H545mtjNOc8TS0eYJhuhTeJhOAD0ngZO34N3ozOxmomu+ysT8rUIhFd0Uy0eDaYDEsk+nQHA4aNazSVNDN6i9mkjb8WHVmtlAj5pLKbEjYMX9HUBTjrrngNrMcB101tzmpFmb09oPxe2aFURMbt9GKd4p55iAwGu+M7BNwcw2rDHhTzHUNc3y9bRrIDa+DwbM6jEjCOm6ELGujfcA1zin+0sgfA+l4TDEuYlofKWlfPZiTEqveLNkhquCR+cMLKKHY7UNcqQwnbWzdIDCKFTK/mH72zwxQ0EyNy5O8eVsJvJdFwgXg3DdNKTKpfmwAwhIVOcNl138Dvbqkddamv7HchXyAeNvXgCSRHjV0o+XyUNby1OUepMSLZFyfoTN4=
   on:
     tags: true
-    distributions: bdist_wheel
+    distributions: sdist bdist_wheel
     repo: behave-restful/behave-restful
     branch: master
 notifications:

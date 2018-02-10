@@ -136,5 +136,11 @@ config = {
         'features': {
             'directory': FEATURES_RESULTS_DIR
         }
-    }
+    },
+    'setup': {
+        'command': 'bdist_wheel',
+        'egg-info': {
+            'command': 'egg_info'
+        }
+    },
 }

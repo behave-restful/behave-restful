@@ -14,7 +14,7 @@ author_email = 'isaac_rodriguez@live.com'
 maintainer = 'Isaac Rodriguez'
 
 version = '0.1'
-release = '0.1.3'
+release = '0.1.4'
 
 classifiers = [
     'Development Status :: 1 - Planning',

@@ -62,10 +62,48 @@ class TestBuilderInterface(unittest.TestCase):
         _builder.set_json_payload(self.context, payload)
         assert_that(self.context.request_json_payload).is_equal_to(expected_payload)
 
+
+    def test_request_parameters_are_set_in_context(self):
+        actual_params = TableDouble()
+        expected_params = {'id': '4',
+                            'name': 'foo_bar'}
+        _builder.set_request_params(self.context, actual_params)
+        assert_that(self.context.request_params).is_equal_to(expected_params)
+
+
+    def test_request_parameters_are_resolved(self):
+        actual_params = TableDouble(resolve=True)
+        expected_params = {'id': '5',
+                           'name': 'resolved name'}
+        _builder.set_request_params(self.context, actual_params)
+        assert_that(self.context.request_params).is_equal_to(expected_params)
+
+
         
 
 class ContextDouble(object):
     pass
+
+
+
+
+class TableDouble(object):
+
+    def __init__(self, resolve=False):
+        self.resolve = resolve
+
+
+    def __iter__(self):
+        if self.resolve:
+            yield {'param': 'id',
+                   'value': '${OBJECT_ID}'}
+            yield {'param': 'name',
+                   'value': '${OBJECT_NAME}'}
+        else:
+            yield {'param': 'id',
+                   'value': '4'}
+            yield {'param': 'name',
+                   'value': 'foo_bar'}
 
 
 

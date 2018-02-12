@@ -20,6 +20,8 @@ class TestRequestInvokerInterface(unittest.TestCase):
             'id': 12,
             'name': 'a name'
         }
+        self.context.request_params = {'foo': 56,
+                                       'bar': 'baz'}
 
 
     # send_get()
@@ -32,6 +34,12 @@ class TestRequestInvokerInterface(unittest.TestCase):
     def test_get_stores_response_in_context(self):
         _invoker.send_get(self.context)
         assert_that(self.context.response).is_same_as(self.response)
+
+
+    def test_get_request_includes_params(self):
+        _invoker.send_get(self.context)
+        assert_that(self.session.request_params).is_same_as(self.context.request_params)
+
 
 
     # send_post()
@@ -49,6 +57,11 @@ class TestRequestInvokerInterface(unittest.TestCase):
     def test_post_stores_response_in_context(self):
         _invoker.send_post(self.context)
         assert_that(self.context.response).is_same_as(self.response)
+
+
+    def test_post_request_includes_params(self):
+        _invoker.send_post(self.context)
+        assert_that(self.session.request_params).is_same_as(self.context.request_params)
 
 
     # send_put()
@@ -69,6 +82,11 @@ class TestRequestInvokerInterface(unittest.TestCase):
         assert_that(self.context.response).is_same_as(self.response)
 
 
+    def test_put_request_includes_params(self):
+        _invoker.send_put(self.context)
+        assert_that(self.session.request_params).is_same_as(self.context.request_params)
+
+
     # send_delete()
     def test_invokes_delete_on_session(self):
         _invoker.send_delete(self.context)
@@ -79,6 +97,11 @@ class TestRequestInvokerInterface(unittest.TestCase):
     def test_delete_stores_response_in_context(self):
         _invoker.send_delete(self.context)
         assert_that(self.context.response).is_same_as(self.response)
+
+
+    def test_delete_request_includes_params(self):
+        _invoker.send_delete(self.context)
+        assert_that(self.session.request_params).is_same_as(self.context.request_params)
         
         
 
@@ -106,26 +129,29 @@ class SessionDouble(object):
         return self.response
 
 
-    def post(self, url, data=None, json=None, **kwargs):
+    def post(self, url, data=None, json=None, params=None, **kwargs):
         self.post_invoked = True
         self.request_url = url
         self.request_data = data
         self.request_json = json
+        self.request_params = params
         self.request_kwargs = kwargs
         return self.response
 
 
-    def put(self, url, data=None, **kwargs):
+    def put(self, url, data=None, params=None, **kwargs):
         self.put_invoked = True
         self.request_url = url
         self.request_data = data
+        self.request_params = params
         self.request_kwargs = kwargs
         return self.response
 
 
-    def delete(self, url, **kwargs):
+    def delete(self, url, params=None, **kwargs):
         self.delete_invoked = True
         self.request_url = url
+        self.request_params = params
         self.request_kwargs = kwargs
         return self.response
 

@@ -19,5 +19,6 @@ def set_json_payload(context, payload):
 def set_request_params(context, params):
     """
     """
-    resolved_params = {param['param']: context.vars.resolve(param['value']) for param in params}
+    resolve = context.vars.resolve
+    resolved_params = {resolve(param['param']): resolve(param['value']) for param in params}
     context.request_params = resolved_params

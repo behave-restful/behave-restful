@@ -13,7 +13,9 @@ vars = {
     'TITLE_PATH': '$.store.book[3].title',
     'BOOK_INDEX': 1,
     'TITLE': 'title',
-    'CATEGORY_FICTION': "fiction"
+    'CATEGORY_FICTION': "fiction",
+    'PARAM_ID': 'id_number',
+    'PARAM_NAME': 'first_name'
 }
 
 def initialize_definition(context):

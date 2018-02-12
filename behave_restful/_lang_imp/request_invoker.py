@@ -5,7 +5,10 @@ def send_get(context):
     """
     """
     params = _get_params(context)
-    context.response = context.session.get(context.request_url, params=params)
+    context.response = context.session.get(
+        context.request_url,
+        params=params
+    )
 
 
 def send_post(context):

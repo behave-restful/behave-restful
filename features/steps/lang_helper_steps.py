@@ -43,6 +43,10 @@ def step_impl(context, name, value):
     assert_that(actual_value).is_equal_to(expected_value)
 
 
+@then('the context contains param {param} with value set to {value}')
+def step_impl(context, param, value):
+    assert_that(context.request_params.get(param)).is_equal_to(value)
+
 
 
 class SessionDouble(object):

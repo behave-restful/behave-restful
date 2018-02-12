@@ -12,3 +12,8 @@ def step_impl(context, url):
 @given('a request json payload')
 def step_impl(context):
     _builder.set_json_payload(context, context.text)
+
+
+@given('request parameters')
+def step_impl(context):
+    _builder.set_request_params(context, context.table)

@@ -15,6 +15,11 @@ def step_impl(context):
     _validate.response_json_matches(context.response, schema)
 
 
+@then('the response json matches defined schema {schema_id}')
+def step_impl(context, schema_id):
+    _validate.response_json_matches_defined_schema(context, schema_id)
+
+
 @then('the response json at {json_path} is equal to {value_str}')
 def step_impl(context, json_path, value_str):
     json_path = context.vars.resolve(json_path)

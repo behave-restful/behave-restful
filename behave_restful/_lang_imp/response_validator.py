@@ -21,7 +21,16 @@ def response_json_matches(response, schema_str):
     """
     schema = json.loads(schema_str)
     json_body = response.json()
-    jsonschema.validate(json_body, schema)
+    _validate_with_schema(json_body, schema)
+
+
+def response_json_matches_defined_schema(context, schema_id):
+    """
+    """
+    schema_id = context.vars.resolve(schema_id)
+    schema = context.schemas.get(schema_id)
+    json_body = context.response.json()
+    _validate_with_schema(json_body, schema)
 
 
 def response_json_matches_at(response, json_path, expected_str):
@@ -44,5 +53,9 @@ def _get_values(json_body, json_path):
     results = jp.parse(json_path).find(json_body)
     if not results: fail('Match not found at <{path}> for <{body}>'.format(path=json_path, body=json_body))
     values = [result.value for result in results]
-    return values    
+    return values
+
+
+def _validate_with_schema(json_body, schema)  :
+    jsonschema.validate(json_body, schema)
 

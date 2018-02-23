@@ -1,9 +1,11 @@
+import json
 import unittest
 
 from assertpy import assert_that
 import jsonschema.exceptions as jse
 
 from behave_restful.xpy import HTTPStatus
+import behave_restful._definitions as _definitions
 
 import behave_restful._lang_imp.response_validator as _validator
 
@@ -133,6 +135,24 @@ class TestResponseValidatorInterface(unittest.TestCase):
             }).validate()
 
 
+    # response_json_matches_defined_schema()
+    def test_matches_response_against_specified_schema(self):
+        self.setup_context()
+        self.given_json({
+            'id': 1,
+            'name': 'object name'
+        }).validate_with('TEST_SCHEMA')
+
+
+    def test_resolves_the_id_if_passed_as_variable(self):
+        self.setup_context()
+        self.setup_context()
+        self.given_json({
+            'id': 1,
+            'name': 'object name'
+        }).validate_with('${SCHEMA_ID}')
+
+
     # response_json_matches_at()
     def test_matches_specified_property(self):
         self.given_json(self.json_body).match('$.store.book[0].author', '"Nigel Rees"')
@@ -165,8 +185,22 @@ class TestResponseValidatorInterface(unittest.TestCase):
         return self
 
 
+    def setup_context(self):
+        self.context = ContextDouble()
+        self.context.response = self.response
+        self.context.schemas = {
+            'TEST_SCHEMA': json.loads(self.schema)
+        }
+        self.context.vars = _definitions.VarsManager()
+        self.context.vars.add('SCHEMA_ID', 'TEST_SCHEMA')
+
+
     def validate(self):
         _validator.response_json_matches(self.response, self.schema)
+
+
+    def validate_with(self, schema_id):
+        _validator.response_json_matches_defined_schema(self.context, schema_id)
 
 
     def match(self, json_path, expected_value):
@@ -185,6 +219,13 @@ class ResponseDouble(object):
     def json(self):
         if self.json_payload: return self.json_payload
         raise ValueError('No JSON object could be decoded')
+
+
+
+class ContextDouble(object):
+    def __init__(self):
+        self.schemas = None
+        self.response = None
         
 
 

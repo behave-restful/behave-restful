@@ -119,7 +119,10 @@ config = {
         },
         'ci': {
             'options': {
-                'tags': ['~@disabled', '~@wip'],
+                'tags': [
+                    ['~@disabled'], 
+                    ['~@wip']
+                ],
                 'junit': True,
                 'junit-directory': FEATURES_RESULTS_DIR,
             }

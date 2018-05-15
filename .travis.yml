@@ -9,7 +9,7 @@ install:
 script:
 - bolt execute-unit-tests
 - bolt execute-feature-tests
-- make -C docs html; fi
+- make -C docs html
 deploy:
   provider: pypi
   user: IsaacRodriguez

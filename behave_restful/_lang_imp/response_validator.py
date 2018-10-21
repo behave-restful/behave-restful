@@ -33,12 +33,74 @@ def response_json_matches_defined_schema(context, schema_id):
     _validate_with_schema(json_body, schema)
 
 
-def response_json_matches_at(response, json_path, expected_str):
+def response_json_at_path_is_equal_to(response, json_path, value):
     """
     """
     values = _get_values(response.json(), json_path)
-    [assert_that(actual_value).is_equal_to(eval(expected_str)) for actual_value in values]
+    [assert_that(actual_value).is_equal_to(eval(value)) for actual_value in values]
     
+
+def response_json_at_path_is_not_equal_to(response, json_path, value):
+    """
+    """
+    values = _get_values(response.json(), json_path)
+    [assert_that(actual_value).is_not_equal_to(eval(value)) for actual_value in values]
+
+
+def response_json_at_path_starts_with(response, json_path, value):
+    """
+    """
+    values = _get_values(response.json(), json_path)
+    [assert_that(actual_value).starts_with(eval(value)) for actual_value in values]
+
+
+def response_json_at_path_ends_with(response, json_path, value):
+    """
+    """
+    values = _get_values(response.json(), json_path)
+    [assert_that(actual_value).ends_with(eval(value)) for actual_value in values]
+
+
+def response_json_at_path_contains(response, json_path, value):
+    """
+    """
+    values = _get_values(response.json(), json_path)
+    [assert_that(actual_value).contains(eval(value)) for actual_value in values]
+
+
+def response_json_at_path_does_not_contain(response, json_path, value):
+    """
+    """
+    values = _get_values(response.json(), json_path)
+    [assert_that(actual_value).does_not_contain(eval(value)) for actual_value in values]
+    
+
+def response_json_at_path_is_null(response, json_path):
+    """
+    """
+    values = _get_values(response.json(), json_path)
+    [assert_that(actual_value).is_none() for actual_value in values]
+
+
+def response_json_at_path_is_not_null(response, json_path):
+    """
+    """
+    values = _get_values(response.json(), json_path)
+    [assert_that(actual_value).is_not_none() for actual_value in values]
+
+
+def response_json_at_path_is_true(response, json_path):
+    """
+    """
+    values = _get_values(response.json(), json_path)
+    [assert_that(actual_value).is_true() for actual_value in values]
+
+
+def response_json_at_path_is_false(response, json_path):
+    """
+    """
+    values = _get_values(response.json(), json_path)
+    [assert_that(actual_value).is_false() for actual_value in values]
 
 
 def _as_numeric_status(status):

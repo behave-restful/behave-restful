@@ -58,8 +58,17 @@ class TestResponseValidatorInterface(unittest.TestCase):
                     "title": "The Lord of the Rings",
                     "isbn": "0-395-19395-8",
                     "price": 22.99,
-                    "edition": 4
-                }
+                    "edition": 4,
+                    "discounted": True
+                },
+                {
+                    "category": "thriller",
+                    "author": "Lee Child",
+                    "title": "Never Go Back",
+                    "isbn": None,
+                    "price": 14.99,
+                    "discounted": False
+                },
                 ],
                 "bicycle": {
                 "color": "red",
@@ -153,31 +162,153 @@ class TestResponseValidatorInterface(unittest.TestCase):
         }).validate_with('${SCHEMA_ID}')
 
 
-    # response_json_matches_at()
+    # response_json_at_path_is_equal_to()
     def test_matches_specified_property(self):
-        self.given_json(self.json_body).match('$.store.book[0].author', '"Nigel Rees"')
+        path = '$.store.book[0].author'
+        value = '"Nigel Rees"'
+        self.given_json(self.json_body).should_be_equal(path, value)
 
 
     def test_matches_specified_double_property(self):
-        self.given_json(self.json_body).match('$.store.book[1].price', '12.99')
+        path = '$.store.book[1].price'
+        value = '12.99'
+        self.given_json(self.json_body).should_be_equal(path, value)
 
 
     def test_matches_specified_integer_property(self):
-        self.given_json(self.json_body).match('$.store.book[3].edition', '4')
+        path = '$.store.book[3].edition'
+        value = '4'
+        self.given_json(self.json_body).should_be_equal(path, value)
 
 
     def test_evaluates_all_matches_found(self):
-        self.given_json(self.json_body).match('$.store.book[1:4].category', '"fiction"')
+        path = '$.store.book[1:4].category'
+        value = '"fiction"'
+        self.given_json(self.json_body).should_be_equal(path, value)
 
 
     def test_evaluates_all_matches_and_fails_if_any_does_not_match(self):
         with self.assertRaises(AssertionError):
-            self.given_json(self.json_body).match('$.store.book[*].category', '"reference"')
+            path = '$.store.book[*].category'
+            value = '"reference"'
+            self.given_json(self.json_body).should_be_equal(path, value)
 
 
     def test_raises_if_specified_path_does_not_find_matches(self):
         with self.assertRaises(AssertionError):
-            self.given_json(self.json_body).match('$.not.a.path', 'no match')    
+            path = '$.not.a.path'
+            value = 'no match'
+            self.given_json(self.json_body).should_be_equal(path, value)
+
+
+    # response_json_at_path_is_not_equal_to()
+    def test_passes_if_string_property_does_not_match_value(self):
+        path = '$.store.book[0].author'
+        value = '"Tolkien"'
+        self.given_json(self.json_body).should_not_be_equal(path, value)
+
+
+    def test_passes_if_all_the_values_are_not_equal_to_specified_value(self):
+        path = '$.store.book[1:4].category'
+        value = '"reference"'
+        self.given_json(self.json_body).should_not_be_equal(path, value)
+    
+
+    def test_raises_if_one_of_the_values_matches_specified_value(self):
+        with self.assertRaises(AssertionError):
+            path = '$.store.book[*].category'
+            value = '"reference"'
+            self.given_json(self.json_body).should_not_be_equal(path, value)
+
+    # Additional comparison functions for straight values
+    def test_passes_if_starts_with_value(self):
+        path = '$.store.book[0].title'
+        value = '"Sayings"'
+        self.given_json(self.json_body).should_start_with(path, value)
+
+
+    def test_raises_if_it_does_not_start_with_value(self):
+        with self.assertRaises(AssertionError):
+            path = '$.store.book[0].title'
+            value = '"saying"'
+            self.given_json(self.json_body).should_start_with(path, value)
+
+
+    def test_passes_if_it_ends_with_value(self):
+        path = '$.store.book[1].title'
+        value = '"our"'
+        self.given_json(self.json_body).should_end_with(path, value)
+
+
+    def test_passes_if_contains_value(self):
+        path = '$.store.book[3].title'
+        value = '"of"'
+        self.given_json(self.json_body).should_contain(path, value)
+
+
+    def test_raises_if_does_not_contain_value(self):
+        with self.assertRaises(AssertionError):
+            path = '$.store.book[3].title'
+            value = '"not"'
+            self.given_json(self.json_body).should_contain(path, value)
+
+
+    def test_passes_if_does_not_contain_value(self):
+        path = '$.store.book[3].title'
+        value = '"not"'
+        self.given_json(self.json_body).should_not_contain(path, value)
+
+
+    def test_raises_if_contains_value(self):
+        with self.assertRaises(AssertionError):
+            path = '$.store.book[3].title'
+            value = '"of"'
+            self.given_json(self.json_body).should_not_contain(path, value)
+
+
+    def test_passes_if_value_is_null(self):
+        path = '$.store.book[4].isbn'
+        self.given_json(self.json_body).should_be_null(path)
+
+
+    def test_raises_if_value_is_not_null(self):
+        with self.assertRaises(AssertionError):
+            path = '$.store.book[3].isbn'
+            self.given_json(self.json_body).should_be_null(path)
+
+
+    def test_passes_if_value_is_not_null(self):
+        path = '$.store.book[3].isbn'
+        self.given_json(self.json_body).should_not_be_null(path)
+
+
+    def test_raises_if_value_is_null(self):
+        with self.assertRaises(AssertionError):
+            path = '$.store.book[4].isbn'
+            self.given_json(self.json_body).should_not_be_null(path)
+
+
+    def test_passes_if_value_is_true(self):
+        path = '$.store.book[3].discounted'
+        self.given_json(self.json_body).should_be_true(path)
+
+
+    def test_raises_if_value_is_not_true(self):
+        with self.assertRaises(AssertionError):
+            path = '$.store.book[4].discounted'
+            self.given_json(self.json_body).should_be_true(path)
+
+
+    def test_passes_if_value_is_false(self):
+        path = '$.store.book[4].discounted'
+        self.given_json(self.json_body).should_be_false(path)
+
+
+    def test_raises_if_value_is_not_false(self):
+        with self.assertRaises(AssertionError):
+            path = '$.store.book[3].discounted'
+            self.given_json(self.json_body).should_be_false(path)
+
 
 
     def given_json(self, json_object):
@@ -203,9 +334,44 @@ class TestResponseValidatorInterface(unittest.TestCase):
         _validator.response_json_matches_defined_schema(self.context, schema_id)
 
 
-    def match(self, json_path, expected_value):
-        _validator.response_json_matches_at(self.response, json_path, expected_value)
+    def should_be_equal(self, json_path, expected_value):
+        _validator.response_json_at_path_is_equal_to(self.response, json_path, expected_value)
+
+
+    def should_not_be_equal(self, json_path, expected_value):
+        _validator.response_json_at_path_is_not_equal_to(self.response, json_path, expected_value)
         
+
+    def should_start_with(self, json_path, expected_value):
+        _validator.response_json_at_path_starts_with(self.response, json_path, expected_value)
+
+
+    def should_end_with(self, json_path, expected_value):
+        _validator.response_json_at_path_ends_with(self.response, json_path, expected_value)
+
+    
+    def should_contain(self, json_path, expected_value):
+        _validator.response_json_at_path_contains(self.response, json_path, expected_value)
+
+
+    def should_not_contain(self, json_path, expected_value):
+        _validator.response_json_at_path_does_not_contain(self.response, json_path, expected_value)
+
+
+    def should_be_null(self, json_path):
+        _validator.response_json_at_path_is_null(self.response, json_path)
+
+
+    def should_not_be_null(self, json_path):
+        _validator.response_json_at_path_is_not_null(self.response, json_path)
+
+
+    def should_be_true(self, json_path):
+        _validator.response_json_at_path_is_true(self.response, json_path)
+
+
+    def should_be_false(self, json_path):
+        _validator.response_json_at_path_is_false(self.response, json_path)
 
 
     

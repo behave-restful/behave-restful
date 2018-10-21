@@ -1,4 +1,4 @@
-# Behave Restful (behave-restful)
+# Behave Restful
 
 [![Build Status](https://travis-ci.org/behave-restful/behave-restful.svg?branch=master)](https://travis-ci.org/behave-restful/behave-restful)
 

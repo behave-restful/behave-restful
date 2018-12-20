@@ -14,12 +14,6 @@ class RunBehaveRestfulTask(bolt_api.Task):
     Bolt task that allows executing Behave Restful through bolt.
     """
 
-    def __call__(self, **kwargs):
-        self.config = kwargs.get('config')
-        self._configure()
-        self._execute()
-
-
     def _configure(self):
         self.features_dir = self._require('directory')
         if not self.features_dir:

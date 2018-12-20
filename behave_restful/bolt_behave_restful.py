@@ -6,10 +6,10 @@ projects.
 import os.path
 
 import behave.__main__ as behave_main
-import bolt.errors as bolt_errors
+import bolt.api as bolt_api
 
 
-class RunBehaveRestfulTask(object):
+class RunBehaveRestfulTask(bolt_api.Task):
     """
     Bolt task that allows executing Behave Restful through bolt.
     """
@@ -21,7 +21,7 @@ class RunBehaveRestfulTask(object):
 
 
     def _configure(self):
-        self.features_dir = self.config.get('directory')
+        self.features_dir = self._require('directory')
         if not self.features_dir:
             raise FeaturesDirectoryNotSpecifiedError()
         if not self._exists(self.features_dir): 
@@ -37,7 +37,7 @@ class RunBehaveRestfulTask(object):
             arguments.extend(['-D', 'definition={d}'.format(d=self.definition)])
         arguments.append(self.features_dir)
         result = self._invoke_behave(arguments)
-        if result != 0: raise FeatureTestsFailedError()
+        if result != 0: raise bolt_api.TaskFailedError()
 
 
     def _exists(self, path):
@@ -178,28 +178,10 @@ class BehaveOptionsParser(object):
 
 
 
-
-class FeaturesDirectoryNotSpecifiedError(bolt_errors.RequiredParameterMissingError):
-    """
-    Exception class raised when the directory with the feature tests is not
-    specified.
-    """
-    def __init__(self):
-        super(FeaturesDirectoryNotSpecifiedError, self).__init__('directory')
-
-
-
-class FeaturesDirectoryDoesNotExistError(bolt_errors.ConfigurationValueError):
+class FeaturesDirectoryDoesNotExistError(bolt_api.ConfigurationValueError):
     """
     Exception class raised when the specified features directory does not
     exist.
     """
     def __init__(self, specified_directory):
         super(FeaturesDirectoryDoesNotExistError, self).__init__('directory', specified_directory)
-
-
-class FeatureTestsFailedError(bolt_errors.TaskError):
-    """
-    Raised when behave fails.
-    """
-    pass

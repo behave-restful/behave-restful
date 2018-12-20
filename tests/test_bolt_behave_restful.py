@@ -1,6 +1,7 @@
 import unittest
 
 from assertpy import assert_that
+import bolt.api as bolt_api
 
 import behave_restful.bolt_behave_restful as br_task
 
@@ -21,7 +22,7 @@ class TestRunBehaveTask(unittest.TestCase):
 
 
     def test_raises_if_no_directory_specified(self):
-        with self.assertRaises(br_task.FeaturesDirectoryNotSpecifiedError):
+        with self.assertRaises(bolt_api.RequiredConfigurationError):
             self.given({})
 
 
@@ -58,7 +59,7 @@ class TestRunBehaveTask(unittest.TestCase):
 
     def test_raises_failure_if_behave_fails(self):
         self.task.behave_result = 1
-        with self.assertRaises(br_task.FeatureTestsFailedError):
+        with self.assertRaises(bolt_api.TaskFailedError):
             self.given(self.config)
 
 

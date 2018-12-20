@@ -1,6 +1,6 @@
 -r dependencies.txt
 assertpy>=0.12
-bolt-ta>=0.2.6
+bolt-ta>=0.2.10
 conttest>=0.0.8
 coverage>=4.1
 m2r>=0.2.1

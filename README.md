@@ -60,3 +60,75 @@ response JSON body using the expected [JSON Schema](http://json-schema.org/).
 Finally, we validate specific values in the response using 
 [JSONPath](http://goessner.net/articles/JsonPath/)
 
+## Installation
+
+Use pip to install behave-restful in your project
+
+```
+pip install behave-restful
+```
+
+## Setup
+
+To add support for `behave-restful` steps in your `.feature` files, you need to include behave-restful's environment and step definitions.
+
+You can do this simply by adding two boilerplate files to your project:
+
+In the root of your `features` directory, add this `environment.py` file:
+
+```python
+# {your_project}/features/en/__init__.py
+
+import os
+
+import behave_restful.app as br_app
+
+
+def before_all(context):
+    this_directory = os.path.abspath(os.path.dirname(__file__))
+    br_app.BehaveRestfulApp().initialize_context(context, this_directory)
+    context.hooks.invoke(br_app.BEFORE_ALL, context)
+
+
+def after_all(context):
+    context.hooks.invoke(br_app.AFTER_ALL, context)
+
+
+def before_feature(context, feature):
+    context.hooks.invoke(br_app.BEFORE_FEATURE, context, feature)
+
+
+def after_feature(context, feature):
+    context.hooks.invoke(br_app.AFTER_FEATURE, context, feature)
+
+
+def before_scenario(context, scenario):
+    context.hooks.invoke(br_app.BEFORE_SCENARIO, context, scenario)
+
+
+def after_scenario(context, scenario):
+    context.hooks.invoke(br_app.AFTER_SCENARIO, context, scenario)
+
+
+def before_step(context, step):
+    context.hooks.invoke(br_app.BEFORE_STEP, context, step)
+
+
+def after_step(context, step):
+    context.hooks.invoke(br_app.AFTER_STEP, context, step)
+
+
+def before_tag(context, tag):
+    context.hooks.invoke(br_app.BEFORE_TAG, context, tag)
+
+
+def after_tag(context, tag):
+    context.hooks.invoke(br_app.AFTER_TAG, context, tag)
+```
+
+And under `features/steps` add this `__init__.py` file:
+
+```python
+# {your_project}/features/steps/__init__.py
+from behave_restful.lang import *
+```

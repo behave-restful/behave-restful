@@ -2,8 +2,15 @@
 This module implements a bolt task that allows to execute feature tests using
 behave. This task works with any behave project and also with Behave Restful
 projects.
+
+Additionally as a convenience, this module includes a second bolt task,
+which allows you to wait for a server to start by polling a url
+(waiting for OK response)
 """
 import os.path
+import requests
+import subprocess
+import time
 
 import behave.__main__ as behave_main
 import bolt.api as bolt_api
@@ -42,8 +49,85 @@ class RunBehaveRestfulTask(bolt_api.Task):
         return behave_main.main(arguments)
 
 
+class WaitForServerRunning(bolt_api.Task):
+    """
+    Bolt task waits for a server to be ready
+    by polling a provided url.
+
+    The motivating case is end-to-end testing
+    a REST API where we want to execute a 'behave-restful' task
+    to test features but must wait first for a server to finish starting.
+
+    For servers with very short start times, 
+    it's usually fine to just add a 'sleep' task for a couple of seconds.
+    But for servers with longer and/or unpredictable start times,
+    it's better to wait only as long as really necessary.
+    A common example would be an api that uses an AI classifier 
+    and loads/inits a large model at startup time.
+
+    Config:
+        url: (string) url to poll for server readiness. 
+            When GET url returns a 200 status, 
+            the server is considered ready, 
+            and this task completes successfully.
+
+        [delay]: (float) a duration in seconds
+            to wait before polling the url the first time.
+            Default is 0 seconds.
+
+        [interval]: (float) the interval in seconds to wait
+            between polling requests to the url.
+            Default 0.3 seconds
+
+        [timeout]: (float) the max seconds to wait
+            for the server to start.
+            Will raise a TimeoutError if the url
+            does not return a 200 response before this duration.
+            Default 5 seconds
+    """
+    def __init__(self):
+        super(WaitForServerRunning, self).__init__()
+        self.process = None
+
+    def tear_down(self):
+        if self.process:
+            self._terminate(self.process)
+            
+    def _configure(self):
+        self.url = self.config.get('url')
+        self.delay = self.config.get('delay') or 0
+        self.interval = self.config.get('interval') or 0.3
+        self.timeout = self.config.get('timeout') or 5
+
+        if not self.url: raise UrlNotSpecifiedError()
+
+    def _execute(self):
+        if self.delay > 0:
+            time.sleep(self.delay)
+
+        timeout_time = time.time() + self.timeout
+        while True:
+            if time.time() > timeout_time:
+                raise TimeoutError() 
+            try:
+                req = requests.request('GET', self.url)
+                if(req.ok):
+                    return
+            except:
+                time.sleep(self.interval)
+
+        
+
+    def _popen_script(self, args):
+        return subprocess.Popen(args)
+
+    def _terminate(self, process):
+        process.terminate()
+        
+        
 def register_tasks(registry):
     registry.register_task('behave-restful', RunBehaveRestfulTask())
+    registry.register_task('wait-for-server-running', WaitForServerRunning())
 
 
 OPTION_PREFIX = '--{o}'
@@ -179,3 +263,12 @@ class FeaturesDirectoryDoesNotExistError(bolt_api.ConfigurationValueError):
     """
     def __init__(self, specified_directory):
         super(FeaturesDirectoryDoesNotExistError, self).__init__('directory', specified_directory)
+        
+        
+class TimeoutError(bolt_api.TaskError):
+    def __init__(self):
+        super(TimeoutError, self).__init__()
+
+class UrlNotSpecifiedError(bolt_api.RequiredConfigurationError):
+    def __init__(self):
+        super(UrlNotSpecifiedError, self).__init__('url')

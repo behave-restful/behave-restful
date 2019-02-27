@@ -17,3 +17,8 @@ def step_impl(context):
 @given('request parameters')
 def step_impl(context):
     _builder.set_request_params(context, context.table)
+
+
+@given('a request file payload')
+def step_impl(context):
+    _builder.set_file_payload(context, context.table)

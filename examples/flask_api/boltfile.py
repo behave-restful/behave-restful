@@ -12,10 +12,13 @@ config = {
 		'startup-script': 'run_api.py'
 	},
 	'wait-for-server-running': {
-		'url': 'http://127.0.0.1:5000'
+		'url': 'http://127.0.0.1:5000/ping'
 	},
 	'behave-restful': {
-		'directory': 'features' # path to features folder
+		'directory': 'features', # path to features folder
+		# 'options': {
+		# 	'i': 'posts_binary_data.feature' # test just one feature
+		# }
 		# 'definition': 'yourdefinition',	# if you are using definitions for different environments
 	}
 }

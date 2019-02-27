@@ -3,3 +3,4 @@ behave>=1.2.5
 jsonpath-rw>=1.4.0
 jsonschema>=2.6.0
 requests>=2.18.4
+requests_toolbelt>=0.9.1

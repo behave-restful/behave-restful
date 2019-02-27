@@ -3,3 +3,4 @@ behave
 behave-restful
 bolt-ta
 flask
+Pillow

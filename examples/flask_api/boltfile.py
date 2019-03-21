@@ -11,8 +11,8 @@ config = {
 	'start-flask': {
 		'startup-script': 'run_api.py'
 	},
-	'sleep': {
-		'duration': 2
+	'wait-for-server-running': {
+		'url': 'http://127.0.0.1:5000'
 	},
 	'behave-restful': {
 		'directory': 'features' # path to features folder
@@ -22,4 +22,4 @@ config = {
 
 # Register a task to invoke all that here:
 
-bolt.register_task('test-features', ['start-flask', 'sleep', 'behave-restful'])
+bolt.register_task('test-features', ['start-flask', 'wait-for-server-running', 'behave-restful'])

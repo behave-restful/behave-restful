@@ -10,6 +10,14 @@ conda create --name behave_restful_flask_api pip python=3.7 && \
     pip install -r requirements.txt
 ```
 
+If you need the conda env to have your local-repo version of behave-restful,
+cd to the root of you clone and install from source with:
+
+```bash
+source activate behave_restful_flask_api  \
+    pip install -e .
+```
+
 ## Running the Example
 
 The aim is to have a runnable task that starts our Flask server, and then once the server is running, executes our behave tests.

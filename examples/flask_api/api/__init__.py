@@ -1,5 +1,4 @@
-from flask import Flask
-import json
+from flask import Flask, jsonify
 
 app = Flask(__name__)
 
@@ -9,6 +8,6 @@ def api_info():
     requests to the root of this api
     just return metadata about the api itself
     """
-    return json.dumps({
+    return jsonify({
         "version": "1.0"
     })

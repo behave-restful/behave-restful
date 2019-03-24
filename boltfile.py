@@ -115,7 +115,7 @@ config = {
         'directory': FEATURES_DIR,
         'definition': 'br_test',
         'options': {
-            'format': 'progress2'
+            'format': 'progress2',
         },
         'ci': {
             'options': {

@@ -23,8 +23,6 @@ class RunBehaveRestfulTask(bolt_api.Task):
 
     def _configure(self):
         self.features_dir = self._require('directory')
-        if not self.features_dir:
-            raise FeaturesDirectoryNotSpecifiedError()
         if not self._exists(self.features_dir): 
             raise FeaturesDirectoryDoesNotExistError(self.features_dir)
         self.definition = self.config.get('definition')

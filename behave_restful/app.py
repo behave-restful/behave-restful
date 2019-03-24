@@ -4,6 +4,7 @@ execution context providing access to directories and other services to
 simplify testing.  
 """
 import os
+import shutil
 
 import requests
 
@@ -48,6 +49,59 @@ class BehaveRestfulApp(object):
         _hooks.EnvironmentHookInitializer().initialize(context)
 
 
-    
 
     
+class BrInitApp(object):
+    """
+    Application class for the br-init command that creates a new Behave Restful
+    project.
+    """
+    def __init__(self):
+        self.project_dir = os.path.join(os.getcwd(), 'features')
+        behave_restful_root = os.path.dirname(os.path.abspath(__file__))
+        self.src_dir = os.path.join(behave_restful_root, '_project')
+
+
+    def init_project(self, project_dir=None):
+        """
+        Creates a new project by copying the default template files to the
+        specified destination, or the features folder in the current working
+        directory.
+
+        The destination folder cannot exist before running this application.
+        """
+        self.project_dir = project_dir or self.project_dir
+        msg = 'Creating project at: {d}'.format(d=self.project_dir)
+        print(msg)
+        self._check_project_dir()
+        self._copy_project_files()
+
+
+    def _check_project_dir(self):
+        if self._exists(self.project_dir):
+            raise ProjectInitError('Target directory already exists')
+
+    
+    def _copy_project_files(self):
+        self._copy_tree(self.src_dir, self.project_dir)
+
+
+    def _exists(self, path):
+        return os.path.exists(path)
+
+
+    def _copy_tree(self, src, dst):
+        shutil.copytree(src, dst)
+
+
+
+class ProjectInitError(Exception):
+    """
+    """
+    def __init__(self, reason):
+        super(ProjectInitError, self).__init__()
+        self.reason = reason
+
+
+    def __repr__(self):
+        return 'ProjectInitError({r})'.format(r=self.reason)

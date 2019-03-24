@@ -67,7 +67,9 @@ class TestBrInitApp(unittest.TestCase):
 
     def test_raises_if_directory_already_exists(self):
         self.app.return_destination_exists = True
-        assert_that(self.app.init_project).raises(br_app.ProjectInitError).when_called_with()
+        with self.assertRaises(br_app.ProjectInitError):
+            self.app.init_project()
+        # assert_that(self.app.init_project).raises(br_app.ProjectInitError).when_called_with()
 
 
     def test_copies_project_files_to_target_directory(self):

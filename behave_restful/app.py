@@ -99,7 +99,7 @@ class ProjectInitError(Exception):
     """
     """
     def __init__(self, reason):
-        super().__init__()
+        super(ProjectInitError, self).__init__()
         self.reason = reason
 
 

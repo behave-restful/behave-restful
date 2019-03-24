@@ -77,7 +77,7 @@ class TestBrInitApp(unittest.TestCase):
 
 class BrInitAppSpy(br_app.BrInitApp):
     def __init__(self):
-        super().__init__()
+        super(BrInitAppSpy, self).__init__()
         self.return_destination_exists = False
         self.specified_src = None
         self.specified_dst = None

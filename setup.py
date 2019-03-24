@@ -18,7 +18,15 @@ def _read_dependencies():
 
 packages = find_packages()
 requirements = _read_dependencies()
+entry_points = {
+    'console_scripts': [
+        'br-init = behave_restful.cli:behave_restful_init'
+    ]
+}
 
+package_data = {
+    'behave_restful': ['./_project/**/*']
+}
 
 setup(
     name=about.project,
@@ -32,5 +40,7 @@ setup(
     keywords=about.keywords,
     classifiers=about.classifiers,
     packages=packages,
-    install_requires=requirements
+    install_requires=requirements,
+    entry_points=entry_points,
+    package_data=package_data
 )

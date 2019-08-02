@@ -28,6 +28,11 @@ Feature: Step when request sends
         Then the session put_invoked property is True
 
 
+    Scenario: Support patch requests
+        When the request sends patch
+        Then the session patch_invoked property is True
+
+
     Scenario: Supports delete requests
         When the request sends delete
         Then the session delete_invoked property is True

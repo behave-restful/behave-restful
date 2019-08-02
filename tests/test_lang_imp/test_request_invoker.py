@@ -87,6 +87,29 @@ class TestRequestInvokerInterface(unittest.TestCase):
         assert_that(self.session.request_params).is_same_as(self.context.request_params)
 
 
+    # send_patch()
+    def test_invokes_patch_on_session(self):
+        _invoker.send_patch(self.context)
+        assert_that(self.session.patch_invoked).is_true()
+        assert_that(self.session.request_url).is_equal_to(self.context.request_url)
+
+
+    def test_invokes_patch_with_json_payload(self):
+        _invoker.send_patch(self.context)
+        assert_that(self.session.request_json).is_equal_to(self.context.request_json_payload)
+
+
+    def test_patch_request_includes_params(self):
+        _invoker.send_patch(self.context)
+        assert_that(self.session.request_params).is_same_as(self.context.request_params)
+
+
+    def test_patch_stores_response_in_context(self):
+        _invoker.send_patch(self.context)
+        assert_that(self.context.response).is_same_as(self.response)
+
+
+
     # send_delete()
     def test_invokes_delete_on_session(self):
         _invoker.send_delete(self.context)
@@ -113,6 +136,7 @@ class SessionDouble(object):
         self.get_invoked = False
         self.post_invoked = False
         self.put_invoked = False
+        self.patch_invoked = False
         self.delete_invoked = False
         self.request_url = None
         self.request_params = None
@@ -143,6 +167,16 @@ class SessionDouble(object):
         self.put_invoked = True
         self.request_url = url
         self.request_data = data
+        self.request_params = params
+        self.request_kwargs = kwargs
+        return self.response
+
+
+    def patch(self, url, data=None, json=None, params=None, **kwargs):
+        self.patch_invoked = True
+        self.request_url = url
+        self.request_data = data
+        self.request_json = json
         self.request_params = params
         self.request_kwargs = kwargs
         return self.response

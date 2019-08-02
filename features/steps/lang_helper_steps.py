@@ -55,6 +55,7 @@ class SessionDouble(object):
         self.get_invoked = False
         self.post_invoked = False
         self.put_invoked = False
+        self.patch_invoked = False
         self.delete_invoked = False
         self.request_url = None
         self.request_params = None
@@ -84,6 +85,15 @@ class SessionDouble(object):
         self.put_invoked = True
         self.request_url = url
         self.request_data = data
+        self.request_kwargs = kwargs
+        return self.response
+
+
+    def patch(self, url, data=None, json=None, **kwargs):
+        self.patch_invoked = True
+        self.request_url = url
+        self.request_data = data
+        self.request_json = json
         self.request_kwargs = kwargs
         return self.response
 

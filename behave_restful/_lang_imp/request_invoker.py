@@ -33,6 +33,17 @@ def send_put(context):
     )
 
 
+def send_patch(context):
+    """
+    """
+    params = _get_params(context)
+    context.response = context.session.patch(
+        context.request_url,
+        params=params,
+        json=context.request_json_payload
+    )
+
+
 def send_delete(context):
     """
     """

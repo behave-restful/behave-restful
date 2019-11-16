@@ -1,5 +1,5 @@
 assertpy>=0.12
 behave>=1.2.5
-jsonpath-rw>=1.4.0
+jsonpath>=0.82
 jsonschema>=2.6.0
 requests>=2.18.4

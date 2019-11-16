@@ -3,7 +3,7 @@
 import json
 
 from assertpy import assert_that, fail
-import jsonpath_rw as jp
+from jsonpath import jsonpath
 import jsonschema
 
 from behave_restful.xpy import HTTPStatus
@@ -112,10 +112,9 @@ def _as_numeric_status(status):
 
 
 def _get_values(json_body, json_path):
-    results = jp.parse(json_path).find(json_body)
+    results = jsonpath(json_body, json_path)
     if not results: fail('Match not found at <{path}> for <{body}>'.format(path=json_path, body=json_body))
-    values = [result.value for result in results]
-    return values
+    return results
 
 
 def _validate_with_schema(json_body, schema)  :

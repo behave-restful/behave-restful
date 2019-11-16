@@ -186,6 +186,11 @@ class TestVarsManager(unittest.TestCase):
         self.assert_resolved(resolution_string).is_equal_to(expected_result)
 
 
+    def test_resolves_jsonpath_filter_values_correctly(self):
+        resolution_string = '$.store.book[?(@.title=="${STRING_VAR}")]'
+        expected_result = '$.store.book[?(@.title=="the string value")]'
+
+
 
     def assert_var(self, var_name):
         actual_value = self.manager.get(var_name)

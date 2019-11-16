@@ -20,6 +20,9 @@ bolt.register_task('ct', [
 bolt.register_task('ft', [
     'run-feature-tests'
 ])
+bolt.register_task('ft-current', [
+    'run-current-feature-tests',
+])
 
 # CI/CD TASKS
 bolt.register_task('execute-unit-tests', [
@@ -51,6 +54,10 @@ bolt.register_task('run-unit-tests', [
 bolt.register_task('run-feature-tests', [
     'clear-pyc-features',
     'behave-restful'
+])
+bolt.register_task('run-current-feature-tests', [
+    'clear-pyc-features',
+    'behave-restful.current'
 ])
 
 
@@ -125,6 +132,14 @@ config = {
                 ],
                 'junit': True,
                 'junit-directory': FEATURES_RESULTS_DIR,
+            }
+        },
+        'current': {
+            'options': {
+                'tags': [
+                    ['@current'],
+                ],
+                'format': 'progress2',
             }
         }
     },

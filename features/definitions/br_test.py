@@ -21,7 +21,8 @@ vars = {
     'CATEGORY_FICTION': "fiction",
     'PARAM_ID': 'id_number',
     'PARAM_NAME': 'first_name',
-    'TEST_SCHEMA_ID': 'TEST_SCHEMA'
+    'TEST_SCHEMA_ID': 'TEST_SCHEMA',
+    'KNOWN_BOOK_TITLE': 'The Lord of the Rings'
 }
 
 def initialize_definition(context):

@@ -79,3 +79,14 @@ Feature: Step then the response json at is equal to
 
     Scenario: Variables can be used in expected value
         Then the response json at $.store.book[1:4].category is equal to "${CATEGORY_FICTION}"
+
+
+    Scenario: Filters are supported in json path
+        Then the response json at $.store.book[?(@.title=="The Lord of the Rings")].author is equal to "J. R. R. Tolkien"
+
+    @current
+    Scenario: Variables can be used in Filters
+        Then the response json at $.store.book[?(@.${TITLE}=="The Lord of the Rings")].price is equal to 22.99
+            And the response json at $.store.book[?(@.title=="${KNOWN_BOOK_TITLE}")].author is equal to "J. R. R. Tolkien"
+
+    

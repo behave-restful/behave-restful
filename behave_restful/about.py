@@ -3,8 +3,8 @@ Provides properties with information about ``behave_restful``.
 """
 
 project = 'behave-restful'
-version = '0.2'
-release = '0.2.0'
+version = '0.3'
+release = '{version}.0'.format(version=version)
 description = 'Implements Gherking language for REST services.'
 copyright = '2017 Abantos'
 author = 'Isaac Rodriguez'
@@ -19,14 +19,11 @@ classifiers = [
     'Intended Audience :: Developers',
     'License :: OSI Approved :: MIT License',
     'Programming Language :: Python',
-    'Programming Language :: Python :: 2',
-    'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.3',
-    'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
     'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
     'Topic :: Internet :: WWW/HTTP',
     'Topic :: Software Development :: Testing :: Acceptance',
     'Topic :: Software Development :: Testing :: BDD',

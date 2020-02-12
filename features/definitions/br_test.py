@@ -27,3 +27,4 @@ vars = {
 
 def initialize_definition(context):
     context.vars.add_vars(vars)
+    context.vars.add('WORKING_DIR', context.working_dir)

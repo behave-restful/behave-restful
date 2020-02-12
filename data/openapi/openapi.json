@@ -1,0 +1,95 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "YAML Test Service Documentation",
+      "description": "YAML file to test schema initialization through OpenAPI documents.",
+      "version": "1.0",
+      "contact": {
+        "name": "Abantos"
+      }
+    },
+    "servers": [
+      {
+        "url": "http://localhost:8080",
+        "description": "Local server"
+      }
+    ],
+    "tags": [
+      {
+        "name": "songs",
+        "description": "Song management endpoints."
+      }
+    ],
+    "paths": {
+      "/songs": {
+        "get": {
+          "tags": [
+            "songs"
+          ],
+          "summary": "Get songs collections.",
+          "description": "Get the collection of songs stored in the service.",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SongCollection"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "NewSong": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "example": "Telegraph Road"
+            },
+            "artist": {
+              "$ref": "models/artists.json#/components/schemas/Artist"
+            }
+          },
+          "required": [
+            "title"
+          ]
+        },
+        "Song": {
+          "type": "object",
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/NewSong"
+            }
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "example": "123456"
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "artist"
+          ]
+        },
+        "SongCollection": {
+          "type": "object",
+          "properties": {
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Song"
+              }
+            }
+          }
+        }
+      }
+    }
+  }

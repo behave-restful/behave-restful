@@ -1,7 +1,7 @@
 """
 Initializes the defined schemas.
 """
-
+import behave_restful.tools as brt
 
 SCHEMAS = {
     'TEST_SCHEMA': {
@@ -19,7 +19,7 @@ SCHEMA_TESTING_FEATURES = {'step then the response json matches defined schema'}
 
 def before_feature(context, feature):
     if feature.name.lower() in SCHEMA_TESTING_FEATURES:
-        context.schemas = SCHEMAS
+        brt.add_json_schemas(SCHEMAS, context)
 
 
 def after_feature(context, feature):

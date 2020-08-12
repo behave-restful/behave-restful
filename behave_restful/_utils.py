@@ -2,7 +2,7 @@
 This module provides internal utility functions that are used by the framework
 implementation and should not be needed by users of the framework.
 """
-import imp
+import importlib
 import os.path
 import sys
 
@@ -28,11 +28,8 @@ def load_module(module_name):
     :param str module_name:
         Name of the module to be imported as a string. 
     """
-    module_file = None
-    try:
-        module_file, pathname, description = imp.find_module(module_name)
-        module = imp.load_module(module_name, module_file, pathname, description)
-        return module
-    finally:
-        if module_file:
-            module_file.close()
+    module_spec = importlib.util.find_spec(module_name)
+    if module_spec:
+        return importlib.util.module_from_spec(module_spec)
+    else:
+        raise ImportError("Module {} not found".format(module_name))

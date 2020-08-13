@@ -28,8 +28,4 @@ def load_module(module_name):
     :param str module_name:
         Name of the module to be imported as a string. 
     """
-    module_spec = importlib.util.find_spec(module_name)
-    if module_spec:
-        return importlib.util.module_from_spec(module_spec)
-    else:
-        raise ImportError("Module {} not found".format(module_name))
+    return importlib.import_module(module_name)

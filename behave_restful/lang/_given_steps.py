@@ -14,6 +14,11 @@ def step_impl(context):
     _builder.set_json_payload(context, context.text)
 
 
+@given('request headers')
+def step_impl(context):
+    _builder.set_request_headers(context, context.table)
+
+
 @given('request parameters')
 def step_impl(context):
     _builder.set_request_params(context, context.table)

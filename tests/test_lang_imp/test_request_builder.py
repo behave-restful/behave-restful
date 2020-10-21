@@ -89,6 +89,28 @@ class TestBuilderInterface(unittest.TestCase):
         assert_that(self.context.request_params).is_equal_to(expected_params)
 
         
+    def test_request_headers_are_set_in_context(self):
+        actual_headers = TableDouble(resolve_headers=True)
+        expected_headers = {'id': '4',
+                            'name': 'foo_bar'}
+        _builder.set_request_headers(self.context, actual_headers)
+        assert_that(self.context.request_headers).is_equal_to(expected_headers)
+
+
+    def test_request_header_values_are_resolved(self):
+        actual_headers = TableDouble(resolve_header_values=True)
+        expected_headers = {'id': '5',
+                           'name': 'resolved name'}
+        _builder.set_request_headers(self.context, actual_headers)
+        assert_that(self.context.request_headers).is_equal_to(expected_headers)
+
+
+    def test_request_header_names_are_resolved(self):
+        actual_headers = TableDouble(resolve_header_names=True)
+        expected_headers = {'resolved_param1': 'foo',
+                           'resolved_param2': 'bar'}
+        _builder.set_request_headers(self.context, actual_headers)
+        assert_that(self.context.request_headers).is_equal_to(expected_headers)
 
 class ContextDouble(object):
     pass
@@ -98,9 +120,12 @@ class ContextDouble(object):
 
 class TableDouble(object):
 
-    def __init__(self, resolve_values=False, resolve_names=False):
+    def __init__(self, resolve_values=False, resolve_names=False, resolve_headers=False, resolve_header_values=False, resolve_header_names=False):
         self.resolve_values = resolve_values
         self.resolve_names = resolve_names
+        self.resolve_headers = resolve_headers
+        self.resolve_header_values = resolve_header_values
+        self.resolve_header_names = resolve_header_names
 
 
     def __iter__(self):
@@ -109,11 +134,27 @@ class TableDouble(object):
                    'value': '${OBJECT_ID}'}
             yield {'param': 'name',
                    'value': '${OBJECT_NAME}'}
+        elif self.resolve_header_values:
+            yield {'header': 'id',
+                   'value': '${OBJECT_ID}'}
+            yield {'header': 'name',
+                   'value': '${OBJECT_NAME}'}
+
         elif self.resolve_names:
             yield {'param': '${PARAM1}',
                    'value': 'foo'}
             yield {'param': '${PARAM2}',
                    'value': 'bar'}
+        elif self.resolve_header_names:
+            yield {'header': '${PARAM1}',
+                   'value': 'foo'}
+            yield {'header': '${PARAM2}',
+                   'value': 'bar'}
+        elif self.resolve_headers:
+            yield {'header': 'id',
+                   'value': '4'}
+            yield {'header': 'name',
+                   'value': 'foo_bar'}
         else:
             yield {'param': 'id',
                    'value': '4'}

@@ -22,3 +22,10 @@ def set_request_params(context, params):
     resolve = context.vars.resolve
     resolved_params = {resolve(param['param']): resolve(param['value']) for param in params}
     context.request_params = resolved_params
+
+def set_request_headers(context, headers):
+    """
+    """
+    resolve = context.vars.resolve
+    resolved_headers = {resolve(header['header']): resolve(header['value']) for header in headers}
+    context.request_headers = resolved_headers

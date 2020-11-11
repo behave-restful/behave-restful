@@ -4,7 +4,7 @@ Feature: Step given request headers
 
     Scenario: Sets the specified headers in the context
         Given request headers
-            | header | value |
+            | param | value |
             | foo    | bar   |
             | baz    | fizz  |
         Then the context contains header foo with value set to bar

@@ -27,5 +27,5 @@ def set_request_headers(context, headers):
     """
     """
     resolve = context.vars.resolve
-    resolved_headers = {resolve(header['header']): resolve(header['value']) for header in headers}
+    resolved_headers = {resolve(header['param']): resolve(header['value']) for header in headers}
     context.request_headers = resolved_headers

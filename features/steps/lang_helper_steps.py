@@ -48,6 +48,11 @@ def step_impl(context, param, value):
     assert_that(context.request_params.get(param)).is_equal_to(value)
 
 
+@then('the context contains header {header} with value set to {value}')
+def step_impl(context, header, value):
+    assert_that(context.request_headers.get(header)).is_equal_to(value)
+
+
 
 class SessionDouble(object):
     def __init__(self):

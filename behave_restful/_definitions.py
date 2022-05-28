@@ -169,14 +169,19 @@ class VarsManager(object):
 
 
     def _find_var_name_in(self, to_resolve):
-        var_starts = to_resolve.find(VAR_PREFIX) + len(VAR_PREFIX)
-        var_ends = to_resolve.find(VAR_SUFFIX, var_starts)
-        return to_resolve[var_starts:var_ends]
+        prefix_location = to_resolve.find(VAR_PREFIX)
+        if self._prefix_found(prefix_location):
+            var_starts = prefix_location + len(VAR_PREFIX)
+            var_ends = to_resolve.find(VAR_SUFFIX, var_starts)
+            return to_resolve[var_starts:var_ends]
 
 
     def _replace_with(self, to_resolve, var_name, value):
         token = ''.join([VAR_PREFIX, var_name, VAR_SUFFIX])
         return to_resolve.replace(token, str(value))
+
+    def _prefix_found(self, location):
+        return location >= 0
 
 
 

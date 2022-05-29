@@ -126,6 +126,7 @@ config = {
         },
         'ci': {
             'options': {
+                'format': 'progress2',
                 'tags': [
                     ['~@disabled'], 
                     ['~@wip']

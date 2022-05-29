@@ -75,11 +75,6 @@ class TestOpenApiReader(unittest.TestCase):
         return values[0]
 
 
-
-        
-
-
-
 class TestReferenceFileLoader(unittest.TestCase):
     
     def setUp(self):
@@ -90,7 +85,7 @@ class TestReferenceFileLoader(unittest.TestCase):
     def test_loads_specified_file_with_correct_reader(self):
         filename = 'openapi.yaml'
         self.loader(filename)
-        assert_that(self.loader.specified_reader).is_same_as(yaml)
+        assert_that(self.loader.specified_reader).is_same_as(brs.yaml_reader)
 
 
     def test_loads_absolute_path_to_specified_file_name(self):
@@ -108,7 +103,7 @@ class TestGetReader(unittest.TestCase):
 
 
     def test_returns_yaml_module_if_file_is_yaml(self):
-        self.given('file.yaml').expect(yaml)
+        self.given('file.yaml').expect(brs.yaml_reader)
 
 
     def given(self, filename):

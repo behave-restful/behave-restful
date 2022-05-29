@@ -71,5 +71,13 @@ YAML_EXT = '.yaml'
 def get_reader(filename):
     name, ext = os.path.splitext(filename)
     if ext == YAML_EXT:
-        return yaml
+        return yaml_reader
     return json
+
+
+class _YamlReader:
+
+    def load(self, fin):
+        return yaml.load(fin, Loader=yaml.Loader)
+
+yaml_reader = _YamlReader()

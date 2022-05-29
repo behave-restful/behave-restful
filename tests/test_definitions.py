@@ -189,7 +189,13 @@ class TestVarsManager(unittest.TestCase):
     def test_resolves_jsonpath_filter_values_correctly(self):
         resolution_string = '$.store.book[?(@.title=="${STRING_VAR}")]'
         expected_result = '$.store.book[?(@.title=="the string value")]'
+        self.assert_resolved(resolution_string).is_equal_to(expected_result)
 
+
+    def test_missing_dollar_sign_from_variable_returns_same_string(self):
+        mistyped_var = '{NO_DOLLAR}'
+        self.manager.add('NO_DOLLAR', 'no dollar')
+        self.assert_resolved(mistyped_var).is_equal_to(mistyped_var)
 
 
     def assert_var(self, var_name):

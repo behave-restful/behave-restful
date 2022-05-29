@@ -4,7 +4,7 @@ Setup for behave-restful
 from setuptools import setup, find_packages
 from os import path
 
-from m2r import parse_from_file
+from m2r2 import parse_from_file
 
 import behave_restful.about as about
 

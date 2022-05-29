@@ -7,3 +7,4 @@ nose
 pylint
 sphinx
 sphinx-rtd-theme
+wheel

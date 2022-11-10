@@ -22,7 +22,9 @@ vars = {
     'PARAM_ID': 'id_number',
     'PARAM_NAME': 'first_name',
     'TEST_SCHEMA_ID': 'TEST_SCHEMA',
-    'KNOWN_BOOK_TITLE': 'The Lord of the Rings'
+    'KNOWN_BOOK_TITLE': 'The Lord of the Rings',
+    'CONTENT_LENGTH_HEADER': 'Content-Length',
+    'KEEP_ALIVE': 'keep-alive'
 }
 
 def initialize_definition(context):

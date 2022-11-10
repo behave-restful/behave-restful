@@ -76,6 +76,10 @@ class TestResponseValidatorInterface(unittest.TestCase):
                 }
             }
         }
+        self.headers = {
+            "Content-Length": "1700"
+        }
+
         self.response = ResponseDouble()        
 
 
@@ -310,9 +314,25 @@ class TestResponseValidatorInterface(unittest.TestCase):
             self.given_json(self.json_body).should_be_false(path)
 
 
+    def test_matches_specified_header(self):
+        header = 'Content-Length'
+        value = '1700'
+        self.given_headers(self.headers).header_should_be_equal(header, value)
+
+  
+    def test_raises_if_specified_header_does_not_find_matches(self):
+        with self.assertRaises(AssertionError):
+            header = 'x-header'
+            value = 'no match'
+            self.given_headers(self.headers).header_should_be_equal(header, value)
 
     def given_json(self, json_object):
         self.response.json_payload = json_object
+        return self
+
+
+    def given_headers(self, headers_object):
+        self.response.headers = headers_object
         return self
 
 
@@ -374,13 +394,16 @@ class TestResponseValidatorInterface(unittest.TestCase):
         _validator.response_json_at_path_is_false(self.response, json_path)
 
 
+    def header_should_be_equal(self, header, expected_value):
+        _validator.response_header_is_equal_to(self.response, header, expected_value)
+
     
 
 class ResponseDouble(object):
     def __init__(self):
         self.status_code = HTTPStatus.OK
         self.json_payload = None
-
+        self.headers = None
 
     def json(self):
         if self.json_payload: return self.json_payload

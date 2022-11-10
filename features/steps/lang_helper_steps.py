@@ -25,6 +25,12 @@ def step_impl(context):
     context.response.json_payload = json_body
 
 
+@given('the response contains headers like')
+def step_impl(context):
+    json_body = json.loads(context.text)
+    context.response.headers = json_body
+
+
 @then('the context request url is equal to {expected_url}')
 def step_impl(context, expected_url):
     assert_that(context.request_url).is_equal_to(expected_url)
@@ -115,6 +121,7 @@ class ResponseDouble(object):
     def __init__(self):
         self.status_code = 200
         self.json_payload = None
+        self.headers = None
 
 
     def json(self):

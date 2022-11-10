@@ -68,12 +68,23 @@ def step_impl(context, json_path):
 @then('the response json at {json_path} is false')
 def step_impl(context, json_path):
     _check_value_with(_validate.response_json_at_path_is_false, context, json_path)
-    
+
+
+@then('the response header {header} is equal to {value}')
+def step_impl(context, header, value):
+    _invoke_match_header(_validate.response_header_is_equal_to, context, header, value)
+
 
 def _invoke_match(func, context, json_path, value_str):
     json_path = context.vars.resolve(json_path)
     value_str = context.vars.resolve(value_str)
     func(context.response, json_path, value_str)
+
+
+def _invoke_match_header(func, context, header, value_str):
+    header = context.vars.resolve(header)
+    value_str = context.vars.resolve(value_str)
+    func(context.response, header, value_str)
 
 
 def _check_value_with(func, context, json_path):

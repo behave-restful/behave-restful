@@ -103,6 +103,13 @@ def response_json_at_path_is_false(response, json_path):
     [assert_that(actual_value).is_false() for actual_value in values]
 
 
+def response_header_is_equal_to(response, header_name, value):
+    """
+    """
+    actual_value = _get_header_values(response.headers, header_name)
+    assert_that(actual_value).is_equal_to(value)
+
+
 def _as_numeric_status(status):
     status = status.replace(' ', '_')
     numeric_status = getattr(HTTPStatus, status.upper(), None)
@@ -116,6 +123,10 @@ def _get_values(json_body, json_path):
     if not results: fail('Match not found at <{path}> for <{body}>'.format(path=json_path, body=json_body))
     return results
 
+def _get_header_values(headers, header_name):
+    result = headers.get(header_name)
+    if not result: fail('Match not found at <{headers}> for <{header_name}>'.format(headers=headers, header_name=header_name))
+    return result
 
 def _validate_with_schema(json_body, schema)  :
     jsonschema.validate(json_body, schema)

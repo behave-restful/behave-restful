@@ -4,7 +4,7 @@ Provides properties with information about ``behave_restful``.
 
 project = 'behave-restful'
 version = '0.4'
-release = '{version}.2'.format(version=version)
+release = '{version}.3'.format(version=version)
 description = 'Implements Gherking language for REST services.'
 copyright = '2017 Abantos'
 author = 'Isaac Rodriguez'

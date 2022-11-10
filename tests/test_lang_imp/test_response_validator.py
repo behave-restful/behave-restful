@@ -77,12 +77,7 @@ class TestResponseValidatorInterface(unittest.TestCase):
             }
         }
         self.headers = {
-            "Content-Type": "application/json",
-            "Content-Length": "1700",
-            "Connection": "keep-alive",
-            "Date": "Thu, 10 Nov 2022 14:37:50 GMT",
-            "Access-Control-Allow-Origin": "*",
-            "Content-Encoding": "gzip"
+            "Content-Length": "1700"
         }
 
         self.response = ResponseDouble()        

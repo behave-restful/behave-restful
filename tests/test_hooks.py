@@ -126,6 +126,13 @@ class TestEnvironmentHookManager(unittest.TestCase):
         self.manager.invoke(_hooks.BEFORE_SCENARIO, 'context', 'the_scenario')
         assert_that(module1.before_scenario_invoked).is_true()
         assert_that(module2.before_scenario_invoked).is_true()
+
+    def test_propagates_exceptions(self):
+        module = ModuleDouble()
+        module.raise_exception = True
+        self.given(module)
+        with self.assertRaises(ValueError):
+            self.invoke(_hooks.BEFORE_ALL, 'context')
                 
 
     def given(self, module):
@@ -162,9 +169,11 @@ class ModuleDouble(object):
         self.after_tag_invoked = False
         self.specified_context = None
         self.specified_feture = None
+        self.raise_exception = False
 
 
     def before_all(self, context):
+        if self.raise_exception: raise ValueError('Forced')
         self.specified_context = context
         self.before_all_invoked = True
 

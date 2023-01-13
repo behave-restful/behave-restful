@@ -1,5 +1,6 @@
 """
 """
+import logging
 import os.path
 
 import behave_restful._utils as _utils
@@ -17,7 +18,7 @@ class EnvironmentHookInitializer(object):
         if self._hooks_dir_exists(hooks_dir):
             self._add_to_search_path(hooks_dir)
             self._register_modules(context.hooks, hooks_dir)
-            
+
 
 
 
@@ -29,7 +30,7 @@ class EnvironmentHookInitializer(object):
         dir_contents = self._get_hooks_dir_content(hooks_dir)
         module_names = [self._get_module_name(f) for f in dir_contents]
         modules = [self._load_hook_module(m) for m in module_names if m]
-        [hooks_manager.register_module(m) for m in modules]  
+        [hooks_manager.register_module(m) for m in modules]
 
 
 
@@ -81,8 +82,8 @@ class EnvironmentHookManager(object):
             BEFORE_TAG: [],
             AFTER_TAG: []
         }
-        
-    
+
+
     def register_module(self, module):
         self._append_callback(BEFORE_ALL, module)
         self._append_callback(AFTER_ALL, module)
@@ -103,13 +104,26 @@ class EnvironmentHookManager(object):
 
     def invoke(self, hook_type, context, *args):
         hooks = self.get_hooks(hook_type)
-        [hook(context, *args) for hook in hooks]        
-        
+        [hook(context, *args) for hook in hooks]
+
 
 
     def _append_callback(self, hook_name, module):
         if hasattr(module, hook_name):
             hook = getattr(module, hook_name)
             hook_collection = self.get_hooks(hook_name)
-            hook_collection.append(hook)
-            
+            hook_collection.append(_HookCallback(hook, hook_name, module))
+
+class _HookCallback:
+    def __init__(self, hook, name, module):
+        self._hook = hook
+        self._hook_name = name
+        self._module_name = module.__name__ if hasattr(module, '__name__') else str(module)
+
+    def __call__(self, context, *args):
+        try:
+            return self._hook(context, *args)
+        except Exception as err:
+            logging.warning(f'HOOK <{self._module_name}.{self._hook_name}> raised exception')
+            logging.exception(err)
+            raise err
